@@ -1,0 +1,7 @@
+flask==3.0.0
+torch>=2.1.0
+torchaudio>=2.1.0
+soundfile
+ffmpeg-python
+git+https://github.com/m-bain/whisperx.git
+pyannote.audio>=3.1

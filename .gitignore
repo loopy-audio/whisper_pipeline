@@ -1,3 +1,7 @@
-*.mp3
-*.sofa
-*.wav
+__pycache__/
+*.pyc
+out/
+data/*.wav
+data/*.mp3
+data/*.json
+data/*.jsonl
