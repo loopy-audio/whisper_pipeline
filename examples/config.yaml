@@ -1,0 +1,66 @@
+# Example configuration for WhisperX Pipeline
+# Save this as config.yaml and use with: whisper-pipeline process audio.wav --config config.yaml
+
+# Transcription settings
+transcription:
+  model_name: "large-v2"              # WhisperX model (tiny, base, small, medium, large, large-v2)
+  device: "auto"                      # auto, cpu, cuda
+  batch_size: 16                      # Batch size for processing
+  compute_type: "float16"             # float16, int8, float32
+  language: null                      # Language code (null for auto-detect)
+  condition_on_previous_text: false   # Use previous text as context
+  temperature: 0.0                    # Sampling temperature
+  compression_ratio_threshold: 2.4    # Compression ratio threshold
+  logprob_threshold: -1.0             # Log probability threshold
+  no_speech_threshold: 0.6            # No speech threshold
+
+# Speaker diarization settings
+diarization:
+  model_name: "pyannote/speaker-diarization-3.1"     # Diarization model
+  num_speakers: null                  # Number of speakers (null for auto-detect)
+  min_speakers: 1                     # Minimum number of speakers
+  max_speakers: 10                    # Maximum number of speakers
+  clustering_threshold: 0.7           # Speaker clustering threshold
+  embeddings_model: "pyannote/wespeaker-voxceleb-resnet34-LM"  # Speaker embedding model
+
+# 3D spatialization settings
+spatialization:
+  hrtf_dataset: "default"             # HRTF dataset to use
+  sample_rate: 44100                  # Output sample rate
+  room_size: "medium"                 # small, medium, large
+  reverb_amount: 0.3                  # Reverb amount (0.0 to 1.0)
+  distance_model: "linear"            # linear, exponential
+  max_distance: 10.0                  # Maximum distance for attenuation (meters)
+  use_doppler: false                  # Enable Doppler effect (not implemented)
+
+# Output settings
+output:
+  output_dir: "output"                # Output directory
+  save_transcript: true               # Save transcript file
+  save_diarization: true              # Save diarization results
+  save_spatialized_audio: true        # Save binaural spatialized audio
+  transcript_format: "json"           # json, srt, txt
+  audio_format: "wav"                 # wav, mp3, flac
+  sample_rate: 44100                  # Audio output sample rate
+  bit_depth: 16                       # Audio bit depth
+
+# Speaker positions in 3D space (meters)
+# Coordinate system: X=left/right, Y=forward/back, Z=up/down
+# Listener is at origin (0, 0, 0) facing positive Y direction
+speaker_positions:
+  SPEAKER_00:                         # First detected speaker
+    x: -1.5                          # 1.5 meters to the left
+    y: 2.0                           # 2 meters in front
+    z: 0.0                           # At ear level
+  SPEAKER_01:                         # Second detected speaker  
+    x: 1.5                           # 1.5 meters to the right
+    y: 2.0                           # 2 meters in front
+    z: 0.0                           # At ear level
+  SPEAKER_02:                         # Third speaker (if detected)
+    x: 0.0                           # Center
+    y: 3.0                           # 3 meters in front
+    z: 0.5                           # Slightly elevated
+
+# Global settings
+verbose: true                         # Enable verbose logging
+use_gpu: true                        # Use GPU acceleration if available
