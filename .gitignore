@@ -5,3 +5,16 @@ data/*.wav
 data/*.mp3
 data/*.json
 data/*.jsonl
+__pycache__/
+*.pyc
+out/
+data/*.wav
+data/*.mp3
+data/*.flac
+data/*.m4a
+stems/
+__pycache__/
+*.pyc
+out/
+data/
+stems/
