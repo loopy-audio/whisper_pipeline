@@ -1,20 +1,39 @@
+# OS/editor
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python
 __pycache__/
 *.pyc
-out/
-data/*.wav
-data/*.mp3
-data/*.json
-data/*.jsonl
-__pycache__/
-*.pyc
-out/
-data/*.wav
-data/*.mp3
-data/*.flac
-data/*.m4a
-stems/
-__pycache__/
-*.pyc
-out/
+*.pyo
+.venv/
+env/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# App artifacts
+outputs/
 data/
-stems/
+tmp/
+*.log
+
+# Audio/video (tracked via LFS if needed)
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+*.ogg
+*.wma
+*.webm
+*.mp4
+*.mkv
+
+# Secrets
+*.env
+.env*
