@@ -1,24 +1,23 @@
-Install deps
-# macOS: ffmpeg
-brew install ffmpeg
+## Run diarization
 
-# create env
-conda create -n whisperx-server python=3.10 -y
-conda activate whisperx-server
+### From inside whisper-diarization/
+python diarize.py -a ../data/song_input.mp3 --whisper-model small --language en --device cpu
 
-# PyTorch (CPU wheel shown; use CUDA wheel if you have NVIDIA)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-# App deps
-pip install -r requirements.txt
-
-Run the server
-# PORT=8190 python app.py, last line
-python app.py
-
-OR
-
-API:
-curl -X POST "http://localhost:8190/transcribe" \
-  -F "file=........song.wav" \
-  -F "prep=true" | jq .
+## expected output
+'''
+{
+  "segments": [
+    {
+      "id": 0,
+      "speaker": "SPEAKER_00",
+      "start": 0.7,
+      "end": 2.8,
+      "text": "You're glowing",
+      "words": [
+        {"word": "You're", "start": 0.706, "end": 1.107, "speaker": "SPEAKER_00"},
+        {"word": "glowing", "start": 1.127, "end": 2.850, "speaker": "SPEAKER_00"}
+      ]
+    }
+  ]
+}
+'''
