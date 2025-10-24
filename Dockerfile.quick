@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1.6
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    HF_HOME=/models/hf \
+    HUGGINGFACE_HUB_CACHE=/models/hf \
+    TRANSFORMERS_CACHE=/models/hf \
+    TORCH_HOME=/models/torch \
+    CTRANSLATE2_CACHE=/models/ct2 \
+    TMPDIR=/tmp
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ffmpeg git build-essential gcc g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -ms /bin/bash appuser
+WORKDIR /app
+
+# copy requirement files first
+COPY requirements.txt /app/requirements.txt
+COPY whisper-diarization/constraints.txt /app/whisper-diarization/constraints.txt
+COPY whisper-diarization/requirements.txt /app/whisper-diarization/requirements.txt
+
+# copy pre-downloaded wheels and install WITHOUT network
+COPY wheelhouse /app/wheelhouse
+RUN pip install --no-index --find-links=/app/wheelhouse -r /app/requirements.txt && \
+    pip install --no-index --find-links=/app/wheelhouse \
+        -c /app/whisper-diarization/constraints.txt \
+        -r /app/whisper-diarization/requirements.txt && \
+    pip install --no-index --find-links=/app/wheelhouse "nemo_toolkit[asr]==2.0.0rc0"
+
+# copy the rest of the project
+COPY . /app
+
+# prepare writable dirs
+RUN mkdir -p /models/hf /models/torch /models/ct2 /app/outputs /app/data /app/separated \
+ && chown -R appuser:appuser /models /app
+
+USER appuser
+
+# entrypoint to run diarization by env or args
+ENTRYPOINT ["python", "-m", "whisper_docker.entrypoint"]

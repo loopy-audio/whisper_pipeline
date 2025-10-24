@@ -1,0 +1,8 @@
+pip
+setuptools
+wheel
+packaging
+typing_extensions
+numpy
+cython
+ninja
