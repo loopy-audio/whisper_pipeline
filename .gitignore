@@ -37,3 +37,18 @@ tmp/
 # Secrets
 *.env
 .env*
+# build artifacts / caches
+wheelhouse/
+models/
+outputs/
+separated/
+data/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.env
+.venv
+env/
+venv/
+.DS_Store
